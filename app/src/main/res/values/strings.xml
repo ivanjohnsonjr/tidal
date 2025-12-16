@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Employees</string>
+    <string name="employee_photo_desc">Photo of %1$s</string>
+    <string name="email_prepend">\@%1$s</string>
+    <string name="employee_header_text">Employees</string>
 </resources>

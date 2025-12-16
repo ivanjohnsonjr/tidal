@@ -54,6 +54,7 @@ class EmployeesViewModel @Inject constructor(
         ) {
             val fullName: String = employee.fullName
             val photo: String = employee.photo
+            val email: String = employee.email
         }
     }
 
@@ -63,7 +64,6 @@ class EmployeesViewModel @Inject constructor(
     private val _refreshAction = MutableStateFlow(false)
     @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
     private val _employeesDataFlow = _refreshAction
-        .drop(1) //drop the initialization
         .debounce(DEBOUNCE)
         .flatMapLatest {
             //Update loading state
