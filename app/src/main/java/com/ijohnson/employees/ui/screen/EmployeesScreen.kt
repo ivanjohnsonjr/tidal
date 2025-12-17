@@ -108,13 +108,13 @@ private fun EmployeeView(
                         minWidth = Dimen.imageMinDimension
                     ),
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data(employee.photo)
+                    .data(employee.data.photo)
                     .crossfade(true)
                     .build(),
                 placeholder = rememberVectorPainter(Icons.Filled.Person),
                 contentDescription = stringResource(
                     R.string.employee_photo_desc,
-                    employee.fullName
+                    employee.data.fullName
                 ),
                 contentScale = ContentScale.Crop
             )
@@ -124,12 +124,12 @@ private fun EmployeeView(
                 verticalArrangement = spacedBy(Dimen.unit)
             ) {
                 Text(
-                    text = employee.fullName,
+                    text = employee.data.fullName,
                     style = MaterialTheme.typography.titleLarge
                 )
 
                 Text(
-                    text = stringResource(R.string.email_prepend, employee.email),
+                    text = stringResource(R.string.email_prepend, employee.data.email),
                     style = MaterialTheme.typography.bodySmall
                 )
             }
@@ -164,7 +164,7 @@ fun GreetingPreview() {
         EmployeeView(
             modifier = Modifier.padding(top = 8.dp),
             employee = UiEmployee(
-                employee = Employee(
+                data = Employee(
                     id = "employee:id",
                     fullName = "John Doe",
                     phoneNumber = "(555) 555-5555",

@@ -49,12 +49,9 @@ class EmployeesViewModel @Inject constructor(
         val isLoading: Boolean = true
     ) {
         data class UiEmployee(
-            private val employee: Employee
-        ) {
-            val fullName: String = employee.fullName
-            val photo: String = employee.photo
-            val email: String = employee.email
-        }
+            val data: Employee,
+            val showDetail: Boolean = false
+        )
     }
 
     private val _uiState = MutableStateFlow(UIState())
