@@ -1,8 +1,12 @@
 package com.ijohnson.employees.repo
 
+import android.app.Application
+import androidx.room.Room
 import com.google.gson.GsonBuilder
 import com.ijohnson.employees.repo.ds.EmployeeApi
+import com.ijohnson.employees.repo.ds.EmployeeDatabase
 import com.ijohnson.employees.repo.ds.EmployeeRemoteDataSource
+import com.ijohnson.employees.repo.ds.EmployeeLocalDataSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,6 +21,8 @@ import java.util.concurrent.TimeUnit
 @InstallIn(SingletonComponent::class)
 object RepoDi {
     private val BASE_URL = "https://s3.amazonaws.com"
+
+    lateinit var applicationContext: Application
 
     private val retroFitBuilder: Retrofit
         get() {
@@ -46,11 +52,23 @@ object RepoDi {
     }
 
     @Provides
-    fun provideEmployeeRepository(
-        api: EmployeeApi
-    ): EmployeeRepository {
-        val ds = EmployeeRemoteDataSource(api)
+    fun provideDatabase(): EmployeeDatabase {
+        return Room.databaseBuilder(
+            applicationContext,
+            EmployeeDatabase::class.java, "db-employee"
+        ).build()
+    }
 
-        return EmployeeRepositoryImpl(ds)
+    @Provides
+    fun provideEmployeeRepository(
+        api: EmployeeApi,
+        employeeDatabase: EmployeeDatabase
+    ): EmployeeRepository {
+        val remoteDs = EmployeeRemoteDataSource(api)
+        val localDs = EmployeeLocalDataSource(
+            employeeDao = employeeDatabase.employeeDao()
+        )
+
+        return EmployeeRepositoryImpl(remoteDs, localDs)
     }
 }

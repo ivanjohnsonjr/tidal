@@ -14,7 +14,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
@@ -74,7 +73,7 @@ class EmployeesViewModel @Inject constructor(
             }
 
             //Fetch employee information
-            load()
+            load(it)
         }
         .onEach { result ->
             _uiState.update {
@@ -102,8 +101,10 @@ class EmployeesViewModel @Inject constructor(
     /**
      * Internal Fetch Employee information
      */
-    private suspend fun load(): Flow<List<UIState.UiEmployee>> {
-        return repo.getEmployees().map {
+    private suspend fun load(
+        forceRefresh: Boolean
+    ): Flow<List<UIState.UiEmployee>> {
+        return repo.getEmployees(forceRefresh).map {
             it.map { emp -> emp.asUiEmployee }
         }.flowOn(Dispatchers.IO)
     }
@@ -112,6 +113,6 @@ class EmployeesViewModel @Inject constructor(
      * Refresh screen info
      */
     fun refresh() {
-        _refreshAction.update { !it }
+        _refreshAction.update { true }
     }
 }
