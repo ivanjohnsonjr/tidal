@@ -16,6 +16,8 @@ data class ApiEmployeeResult(
  */
 interface EmployeeApi {
 
+//    @GET("/sq-mobile-interview/employees_malformed.json")
+//    @GET("/sq-mobile-interview/employees_empty.json")
     @GET("/sq-mobile-interview/employees.json")
     fun employees(): Call<ApiEmployeeResult>
 }

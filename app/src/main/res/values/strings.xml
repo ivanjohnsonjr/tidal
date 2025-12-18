@@ -3,4 +3,5 @@
     <string name="employee_photo_desc">Photo of %1$s</string>
     <string name="email_prepend">\@%1$s</string>
     <string name="employee_header_text">Employees</string>
+    <string name="empty_state_text">No Employees Available. pull to refresh content!</string>
 </resources>

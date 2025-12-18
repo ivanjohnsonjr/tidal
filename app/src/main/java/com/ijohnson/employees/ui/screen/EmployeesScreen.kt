@@ -2,6 +2,7 @@ package com.ijohnson.employees.ui.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -22,6 +23,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
@@ -53,6 +55,7 @@ fun EmployeesScreen(
         modifier = modifier,
         employees = state.employees,
         isLoading = state.isLoading,
+        showEmptyState = state.employees.isEmpty() && !state.isLoading,
         errorMessage = state.errorMessage,
         onRefresh = { vm.refresh() }
     )
@@ -63,6 +66,7 @@ fun EmployeesScreen(
 private fun InternalEmployeeScreen(
     employees: List<UiEmployee>,
     isLoading: Boolean,
+    showEmptyState: Boolean,
     errorMessage: String?,
     modifier: Modifier = Modifier,
     onRefresh: () -> Unit
@@ -74,12 +78,20 @@ private fun InternalEmployeeScreen(
     ) {
 
         LazyColumn(
-            modifier = Modifier.padding(horizontal = Dimen.unitx2),
+            modifier = Modifier.fillMaxSize().padding(horizontal = Dimen.unitx2),
             verticalArrangement = spacedBy(Dimen.unitx2)
         ) {
             errorMessage?.let {
                 item {
                     ErrorView(errorMessage)
+                }
+            }
+
+            if (showEmptyState) {
+                item {
+                    EmptyView(
+                        modifier.fillMaxSize()
+                    )
                 }
             }
 
@@ -89,6 +101,24 @@ private fun InternalEmployeeScreen(
         }
     }
 }
+
+@Composable
+private fun EmptyView(
+    modifier: Modifier = Modifier
+) {
+    Row (
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = stringResource(R.string.empty_state_text),
+            style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.primary
+        )
+    }
+}
+
 
 @Composable
 private fun EmployeeView(
