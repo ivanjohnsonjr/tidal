@@ -26,4 +26,4 @@ This app is a basic application used display a list of employees retrieve from a
 - theme - Generate theme information
 
 MainActivity - The Single Activity used for displaying the screen<br/>
-RickMortyApplication - Lightweight Application instance used for initializing Hilt<br/>
+EmployeesApplication - Lightweight Application instance used for initializing Hilt<br/>
